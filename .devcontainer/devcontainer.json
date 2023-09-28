@@ -1,0 +1,219 @@
+{
+  // see: https://github.com/devcontainers/spec/blob/main/docs/specs/devcontainerjson-reference.md
+  // see: https://containers.dev/implementors/json_reference/
+  // see: https://code.visualstudio.com/docs/getstarted/settings#_default-settings
+  // see: https://code.visualstudio.com/docs/editor/variables-reference
+  ////////////////////////
+  // General properties //
+  ////////////////////////
+  // A display name for the container.
+  "name": "quarkus-resteasy-reactive-bug",
+  // A set of name-value pairs that sets or overrides environment variables for the devcontainer.json supporting
+  // service / tool (or sub-processes like terminals) but not the container as a whole.
+  "remoteEnv": {
+    // You can reference the env var when running Docker commands from the terminal inside the container.
+    // docker run -it --rm -v "${LOCAL_WORKSPACE_FOLDER//\\/\/}:/workspace" debian bash
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+  },
+  // On Linux, the container user's UID/GID will be updated to match your local user.
+  "updateRemoteUserUID": true,
+  // Indicates the type of shell VS Code should use to "probe" for user environment variables to use by default
+  // while debugging or running a task: none (default), interactiveShell, loginShell, or loginInteractiveShell.
+  // Fire ~/.bashrc, ~/.zshrc before starting VS Code processes
+  "userEnvProbe": "interactiveShell",
+  // Tells VS Code and other devcontainer.json supporting services / tools 
+  // whether they should run /bin/sh -c "while sleep 1000; do :; done" 
+  // when starting the container instead of the container's default command 
+  // (since the container can shut down if the default command fails).
+  "overrideCommand": false,
+  // Indicates whether VS Code and other devcontainer.json supporting tools should stop 
+  // the containers when the related tool window is closed / shut down.
+  "shutdownAction": "stopCompose",
+  ////////////////////////////////////////
+  // Docker Compose specific properties //
+  ////////////////////////////////////////
+  // Path or an ordered list of paths to Docker Compose files.
+  // The path is relative to the devcontainer.json file.
+  "dockerComposeFile": "docker-compose.yml",
+  // The name of the service VS Code and other devcontainer.json 
+  // supporting services / tools should connect to once running.
+  "service": "quarkus-resteasy-reactive-bug",
+  // Sets the default path that VS Code and other devcontainer.json supporting services / tools 
+  // should open when connecting to the container 
+  // (which is often the path to a volume mount where the source code can be found in the container).
+  "workspaceFolder": "/workspaces/quarkus-resteasy-reactive-bug",
+  /////////////////////////////////
+  // VS Code specific properties //
+  /////////////////////////////////
+  // Configure tool-specific properties.
+  "customizations": {
+    // Configure properties specific to VS Code.
+    "vscode": {
+      // An array of extension IDs that specify the extensions that should be installed inside the container when it is created.
+      "extensions": [
+        // Git Graph (https://github.com/mhutchie/vscode-git-graph)
+        "mhutchie.git-graph",
+        // GitLens — Git supercharged (https://github.com/gitkraken/vscode-gitlens)
+        "eamodio.gitlens",
+        // Docker (https://github.com/microsoft/vscode-docker)
+        "ms-azuretools.vscode-docker",
+        // YAML Language Support by Red Hat, with built-in Kubernetes syntax support (https://github.com/redhat-developer/vscode-yaml)
+        "redhat.vscode-yaml",
+        // XML (https://github.com/redhat-developer/vscode-xml)
+        "redhat.vscode-xml",
+        // Extension Pack for Java (https://github.com/Microsoft/vscode-java-pack)
+        "vscjava.vscode-java-pack",
+        // Dependency Analytics (https://github.com/fabric8-analytics/fabric8-analytics-vscode-extension)
+        "redhat.fabric8-analytics",
+        // Javadoc Tools (https://github.com/madhavd1/vscode-javadoc-tools)
+        "madhavd1.javadoc-tools",
+        // Quarkus (https://github.com/redhat-developer/vscode-quarkus)
+        "redhat.vscode-quarkus"
+      ],
+      // Adds default settings.json values into a container/machine specific settings file.
+      "settings": {
+        ////////////////////////////////////////////////////////////////
+        // Maven for Java (https://github.com/Microsoft/vscode-maven) //
+        ////////////////////////////////////////////////////////////////
+        // Needed by Dependency Analytics extension
+        "maven.executable.path": "/workspaces/quarkus-resteasy-reactive-bug/.devcontainer/mvnw",
+        // Specifies an array of environment variable names and values. 
+        // These environment variable values will be added before Maven is executed.
+        "maven.terminal.customEnv": [
+          {
+            "environmentVariable": "JAVA_HOME",
+            "value": "/usr/lib/jvm/17"
+          }
+        ],
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+        // Language Support for Java(TM) by Red Hat (https://github.com/redhat-developer/vscode-java) //
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+        // Configure Java available runtimes
+        "java.configuration.runtimes": [
+          {
+            "name": "JavaSE-17",
+            "path": "/usr/lib/jvm/17",
+            "default": true
+          }
+        ],
+        // Exclude folders from import via glob patterns.
+        "java.import.exclusions": [
+          "**/node_modules/**",
+          "**/.metadata/**",
+          "**/archetype-resources/**",
+          "**/META-INF/maven/**",
+          "**/NBG-Server/**"
+        ],
+        // Defines a list of static members or types with static members.
+        "java.completion.favoriteStaticMembers": [
+          // Default values
+          "org.junit.Assert.*",
+          "org.junit.Assume.*",
+          "org.junit.jupiter.api.Assertions.*",
+          "org.junit.jupiter.api.Assumptions.*",
+          "org.junit.jupiter.api.DynamicContainer.*",
+          "org.junit.jupiter.api.DynamicTest.*",
+          "org.mockito.Mockito.*",
+          "org.mockito.ArgumentMatchers.*",
+          "org.mockito.Answers.*",
+          // Extra
+          "org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*",
+          "org.springframework.test.web.servlet.result.MockMvcResultMatchers.*",
+          "org.assertj.core.api.Assertions.*",
+          "org.hamcrest.CoreMatchers.*",
+          "org.hamcrest.Matchers.*",
+          "io.restassured.RestAssured.*"
+        ],
+        ///////////////////////
+        // redhat.vscode-xml //
+        ///////////////////////
+        // Max line width. Set to 0 to disable this setting. Default is 100.
+        "xml.format.maxLineWidth": 0,
+        ////////////
+        // Editor //
+        ////////////
+        // Controls whether `editor.tabSize#` and `#editor.insertSpaces` will be automatically detected when a file is opened based on the file contents.
+        "editor.detectIndentation": false,
+        // Controls whether the editor should automatically format the pasted content. A formatter must be available and the formatter should be able to format a range in a document.
+        "editor.formatOnPaste": true,
+        // Format a file on save. A formatter must be available, the file must not be saved after delay, and the editor must not be shutting down.
+        "editor.formatOnSave": true,
+        // Controls whether the editor should automatically format the line after typing.
+        "editor.formatOnType": true,
+        // The number of spaces a tab is equal to. This setting is overridden based on the file contents when `editor.detectIndentation` is on.
+        "editor.tabSize": 2,
+        ///////////
+        // Files //
+        ///////////
+        // Configure glob patterns for excluding files and folders.
+        "files.exclude": {
+          // Default values
+          "**/.git": true,
+          "**/.svn": true,
+          "**/.hg": true,
+          "**/CVS": true,
+          "**/.DS_Store": true,
+          // Extra
+          "**/tmp/**": true,
+          "**/.gradle": true,
+          "**/.idea": true,
+          "**/.mvn": true,
+          "**/.classpath": true,
+          "**/.project": true,
+          "**/.settings": true,
+          "**/.factorypath": true
+        },
+        // Configure glob patterns of file paths to exclude from file watching.
+        "files.watcherExclude": {
+          // Default values
+          "**/.git/objects/**": true,
+          "**/.git/subtree-cache/**": true,
+          "**/node_modules/**": true,
+          "**/.hg/store/**": true,
+          // Extra
+          "**/tmp/**": true,
+          "**/bower_components/**": true,
+          "**/dist/**": true,
+          "**/coverage/**": true
+        },
+        ////////////
+        // Search //
+        ////////////
+        // Configure glob patterns for excluding files and folders in fulltext searches and quick open.
+        // Inherits all glob patterns from the `files.exclude` setting.
+        "search.exclude": {
+          // Default values
+          "**/node_modules": true,
+          "**/bower_components": true,
+          "**/*.code-search": true,
+          // Extra
+          "**/target/**": true,
+          "**/dist/**": true,
+          "**/coverage/**": true
+        },
+        //////////////
+        // Terminal //
+        //////////////
+        // Ensure VS Code uses the right shell for terminals and tasks.
+        // The default profile used on Linux. This setting will currently be ignored if either `terminal.integrated.shell.linux` or `terminal.integrated.shellArgs.linux` are set.
+        "terminal.integrated.defaultProfile.linux": "bash",
+        // The Linux profiles to present when creating a new terminal via the terminal dropdown. Set the `path` property manually with an optional `args`.
+        // Set an existing profile to `null` to hide the profile from the list, for example: `"bash": null`.
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "/bin/bash",
+            "args": [
+              // Run interactive bash shell in VSCode integrated terminal
+              "-i"
+            ]
+          }
+        },
+        ////////////
+        // Remote //
+        ////////////
+        // Disable automatic port forwarding
+        "remote.autoForwardPorts": false
+      }
+    }
+  }
+}

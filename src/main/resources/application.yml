@@ -1,0 +1,11 @@
+quarkus:
+  http:
+    non-application-root-path: /q
+
+"%dev":
+  quarkus:
+    log:
+      category:
+        # For dev, show debug logs
+        "org.eu.rubensa.sample":
+          level: DEBUG

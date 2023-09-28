@@ -1,0 +1,4 @@
+#!/bin/sh
+# Hack needed by redhat.fabric8-analytics extension that runs maven commands from vscode-server binary directory (not from workspace directory)
+cd /workspaces/quarkus-resteasy-reactive-bug
+/workspaces/quarkus-resteasy-reactive-bug/mvnw "$@"

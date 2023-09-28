@@ -1,0 +1,45 @@
+# 3.5 Min version needed to allow setting network name (https://github.com/docker/compose/issues/3736)
+# 3.9 Min version for 3.x that supports depends_on condition (https://github.com/compose-spec/compose-spec/blob/master/spec.md#long-syntax-1)
+# docker-compose min version that implements condition is 1.29.0 (https://github.com/docker/compose/releases/tag/1.29.0) which needs docker engine 19.03.0+
+version: '3.9'
+services:
+  quarkus-resteasy-reactive-bug:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      # Mounts the project folder to '/workspaces/quarkus-resteasy-reactive-bug'. While this file is in .devcontainer,
+      # mounts are relative to the first file in the list, which is a level up.
+      - ../:/workspaces/quarkus-resteasy-reactive-bug
+      # Docker-from-Docker
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker-host.sock
+      # VSCode server extensions cache
+      - type: volume
+        source: vscode-server-extensions-cache
+        target: /vscode/vscode-server/extensionsCache
+      # Maven repository cache
+      - type: volume
+        source: m2-repository-cache
+        target: /home/user/.m2/repository
+      # Maven wrapper cache
+      - type: volume
+        source: m2-wrapper-cache
+        target: /home/user/.m2/wrapper
+    environment:
+      # Timezone
+      - TZ=Europe/Madrid
+      # Needed by redhat.fabric8-analytics extension
+      - JAVA_HOME=/opt/sdkman/candidates/java/current/
+
+volumes:
+  vscode-server-extensions-cache:
+    # Create or join a volume with given name
+    name: vscode-server-extensions-cache
+  m2-repository-cache:
+    # Create or join a volume with given name
+    name: m2-repository-cache
+  m2-wrapper-cache:
+    # Create or join a volume with given name
+    name: m2-wrapper-cache
